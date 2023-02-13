@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from 'react'
 
+import Link from '../content/Link'
+
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -12,35 +14,13 @@ const PerformanceFooter: FunctionComponent<Props> = (props) =>
             <nav>
               <ul className="footer-navigation">
                 <li>
-                  <a
-                      href="https://www.slub-dresden.de/"
-                      title="Sächsische Landesbibliothek – Staats- und Universitätsbibliothek Dresden"
-                  >
-                    SLUB Dresden
-                  </a>
+                  <Link href="https://www.slub-dresden.de/" title="Sächsische Landesbibliothek – Staats- und Universitätsbibliothek Dresden">SLUB Dresden</Link>
                 </li>
                 <li>
-                  <a href="https://www.musiconn.de/" title="musiconn">
-                    musiconn
-                  </a>
+                  <Link href="https://www.arthistoricum.net/" title="arthistoricum">arthistoricum</Link>
                 </li>
                 <li>
-                  <a href="https://performance.musiconn.de/legal" title="Impressum">
-                    Impressum
-                  </a>
-                </li>
-                <li>
-                  <a
-                      href="https://performance.musiconn.de/privacy"
-                      title="Datenschutzerklärung"
-                  >
-                    Datenschutzerklärung
-                  </a>
-                </li>
-                <li>
-                  <a href="https://performance.musiconn.de/contact" title="Kontakt">
-                    Kontakt
-                  </a>
+                  <Link href="https://www.arthistoricum.net/impressum" title="Impressum">Impressum</Link>
                 </li>
               </ul>
             </nav>
