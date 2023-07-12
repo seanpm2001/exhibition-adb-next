@@ -67,13 +67,8 @@ const WikidataAutocompleteInput: FunctionComponent<Props> = ({selected, onSelect
 
 
   return (<>
-        <Typography variant={'h4'}>
-          {classInfo?.label || classType || ''}
-        </Typography>
-        <Typography variant={'body1'}>
-          {classInfo?.description}
-        </Typography>
         <DebouncedAutocomplete
+            minSearchLength={3}
             load={async (searchString) => searchString
                 ? (await findPersonWithinWikidataUsingREST(searchString, 10, classType)).map(d => {
                   return d
@@ -86,7 +81,7 @@ const WikidataAutocompleteInput: FunctionComponent<Props> = ({selected, onSelect
                 }))
                 : []}
             value={__selected}
-            placeholder="Search for a human within wikidata"
+            placeholder={`Suche innerhalb der Wikidata (${classType})`}
             getOptionLabel={buildLabelFromSuggestion}
             renderOption={(props, option: any) => (
                 <li {...props} key={option.value}>

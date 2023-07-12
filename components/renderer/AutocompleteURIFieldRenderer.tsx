@@ -25,7 +25,6 @@ const AutocompleteURIFieldRenderer = (props: ControlProps) => {
   } = props
   const isValid = errors.length === 0
   const appliedUiSchemaOptions = merge({}, config, uischema.options)
-  const [editMode, setEditMode] = useState(false)
   const [selected, setSelected] = useState<AutocompleteSuggestion | null>(null)
 
 
@@ -50,6 +49,7 @@ return (
           id={id}
           variant={'standard'}
           sx={theme => ({marginBottom: theme.spacing(2)})}
+          hiddenLabel={true}
       >
         <Grid container alignItems='baseline'>
           <Grid item>
@@ -58,11 +58,11 @@ return (
                 required={showAsRequired(!!required,
                     appliedUiSchemaOptions.hideRequiredAsterisk)}
             >
-              {label}
+              Wikidata
             </FormLabel>
-          </Grid>
+          </Grid>{' '}
           <Grid item>
-            <IconButton onClick={() => setEditMode(prev => !prev)}>{editMode ? <EditOff/> : <Edit/>}</IconButton>
+            {data}
           </Grid>
         </Grid>
         <WikidataAutocompleteInput selected={selected} onSelectionChange={setSelected} typeOf={classType}/>

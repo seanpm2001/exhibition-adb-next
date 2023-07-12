@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/.idea
 
 # testing
 /coverage
@@ -36,3 +37,5 @@ yarn-error.log*
 next-env.d.ts
 
 /theme
+/docker/data/
+/jsonldtest.mjs
