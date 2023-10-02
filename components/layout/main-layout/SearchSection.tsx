@@ -82,7 +82,7 @@ export const SearchSection = () => {
 
   const handleChange = useCallback(
       (value?: string | null) => {
-        value && router.push(`/create/${typeName}/${encodeURIComponent(value)}`)
+        value && router.push(`/create/${typeName}/${btoa(value)}`)
       }
       , [typeName])
 

@@ -1,12 +1,10 @@
 import {Box, Chip, Drawer, Stack, useMediaQuery, useTheme} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
 import {JSONSchema7} from 'json-schema'
-import {ForwardedRef, useMemo} from 'react'
+import {useMemo} from 'react'
 import {BrowserView, MobileView} from 'react-device-detect'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import loadedSchema from '../../../public/schema/Exhibition.schema.json'
-import {sladb} from '../../form/formConfigs'
 import {useFormRefsContext} from '../../provider/formRefsContext'
 import {drawerWidth} from './MainLayout'
 import {MenuGroup, NavGroup} from './menu'

@@ -1,3 +1,4 @@
+import {btoa} from 'buffer'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import React, {useCallback, useEffect, useMemo} from 'react'
@@ -7,11 +8,39 @@ import TypedForm from '../../../components/content/main/TypedForm'
 import {sladb, slent} from '../../../components/form/formConfigs'
 import {MainLayout} from '../../../components/layout/main-layout'
 import {useFormData, useRDFDataSources} from '../../../components/state'
+import findEntityByClass from '../../../components/utils/discover/findEntityByClass'
+import {oxigraphCrudOptions} from '../../../components/utils/sparql/remoteOxigraph'
 
 type Props = {
   children: React.ReactChild
   data: any
   classIRI: string
+}
+
+export async function getStaticPaths() {
+  const pages = ['Exhibition', 'Person'].flatMap(async (typeName) => {
+    const classIRI = sladb[typeName].value
+    const allEntities = await findEntityByClass(null, classIRI, oxigraphCrudOptions('https://ausstellungsdatenbank.kuenste.live/query').selectFetch, 1000)
+    return allEntities.map((entity: any) => {
+      return {
+        params: {typeName, id: btoa( entity.value) },
+      }
+    })
+  })
+  const paths = (await Promise.all(pages)).flat()
+  console.log({paths: JSON.stringify(paths, null, 2)})
+  return {paths: paths, fallback: false}
+}
+
+export async function getStaticProps({params}) {
+  const typeName = params.typeName
+  const id = params.id
+  return {
+    props: {
+      typeName,
+      id
+    }
+  }
 }
 export default () => {
   const {bulkLoaded} = useRDFDataSources('/ontology/exhibition-info.owl.ttl')
@@ -25,7 +54,7 @@ export default () => {
   useEffect(() => {
     if (id && classIRI) {
       setFormData({
-        '@id': decodeURIComponent(id),
+        '@id': id.startsWith('http') ? decodeURIComponent(id) : atob(id),
         '@type': classIRI
       })
     }
