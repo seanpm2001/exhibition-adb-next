@@ -36,7 +36,7 @@ const lists: (schema: JSONSchema7) => MenuGroup = (exhibitionSchema) => ({
       id: "list_person",
       title: "Personen",
       type: "item",
-      typeName: "Person"
+      typeName: "Person",
     },
     {
       id: "list_other",
