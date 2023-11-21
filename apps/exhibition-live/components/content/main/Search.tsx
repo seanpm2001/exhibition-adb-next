@@ -43,8 +43,14 @@ const makeFilterUNION2 = (searchString: string, length: number) => {
   return filterUNION.join(" UNION ");
 };
 
-const makeFilterUNION = (searchString: string, length: number) => {
+const makeFilterUNIONDefault = (searchString: string, length: number) => {
   return `?entity ?p ?o . FILTER(CONTAINS(LCASE(STR(?o)), "${searchString}"))`;
+};
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+const makeFilterUNION = (searchString: string, length: number) => {
+  return `?entity ?p ?o . FILTER(REGEX(?o, ".*${escapeRegExp(searchString)}.*"))`;
 };
 
 const dateStringValueToInt = (date: string) => {
@@ -250,8 +256,7 @@ export const SearchBar = ({ relevantTypes }: { relevantTypes: string[] }) => {
       const query = fixSparqlOrder(
         SELECT.DISTINCT` ?type (COUNT(?type) AS ${count}) `.WHERE`
     ?entity a ?type .
-    FILTER( ?type IN (${defaultClassIRIs.join(",")}) )
-    FILTER(isIRI(?entity))
+    VALUES ?type {${defaultClassIRIs.join(" ")} }
     ${searchString.length > 0 ? makeFilterUNION(searchString, 2) : ""}
     `.GROUP().BY` ?type `
           .ORDER()
@@ -331,8 +336,7 @@ export const SearchBar = ({ relevantTypes }: { relevantTypes: string[] }) => {
           defaultPrefix,
           SELECT.DISTINCT`${entityV} ?type ${selectPartOptionals} `.WHERE`
     ${entityV} a ?type .
-    FILTER( ?type IN (${classIRIs.join(",")}) )
-    FILTER(isIRI(${entityV}))
+    VALUES ?type {${classIRIs.join(" ")} }
     ${searchString.length > 0 ? makeFilterUNION(searchString, 2) : ""}
     ${wherePartOptionals}
     `.GROUP().BY`${entityV} ?type`

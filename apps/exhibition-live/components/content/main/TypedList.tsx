@@ -204,7 +204,8 @@ export const TypedList = ({ typeName }: Props) => {
         jsonSchema2Select(loadedSchema, classIRI, [], {
           primaryFields: primaryFields,
           orderBy: sorting.map((s) => ({ orderBy: s.id, descending: s.desc })),
-        }),
+        },
+        false, "oxigraph", true),
       );
       if (!sparqlQuery || !crudOptions?.selectFetch) {
         return;
