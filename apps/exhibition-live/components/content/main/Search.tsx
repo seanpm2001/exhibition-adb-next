@@ -47,10 +47,12 @@ const makeFilterUNIONDefault = (searchString: string, length: number) => {
   return `?entity ?p ?o . FILTER(CONTAINS(LCASE(STR(?o)), "${searchString}"))`;
 };
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 const makeFilterUNION = (searchString: string, length: number) => {
-  return `?entity ?p ?o . FILTER(REGEX(?o, ".*${escapeRegExp(searchString)}.*"))`;
+  return `?entity ?p ?o . FILTER(REGEX(?o, ".*${escapeRegExp(
+    searchString,
+  )}.*"))`;
 };
 
 const dateStringValueToInt = (date: string) => {

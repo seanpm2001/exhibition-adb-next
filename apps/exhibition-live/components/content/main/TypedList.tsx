@@ -19,10 +19,6 @@ import {
   IconButton,
   Backdrop,
   CircularProgress,
-  Typography,
-  Toolbar,
-  Tab,
-  Tabs,
 } from "@mui/material";
 import {
   MaterialReactTable,
@@ -32,7 +28,6 @@ import {
   MRT_Row,
   MRT_RowSelectionState,
   MRT_SortingState,
-  MRT_TableInstance,
   MRT_Virtualizer,
   useMaterialReactTable,
 } from "material-react-table";
@@ -41,7 +36,6 @@ import {
   filterForArrayProperties,
   encodeIRI,
   isJSONSchema,
-  filterUndefOrNull,
 } from "../../utils/core";
 import { JSONSchema7 } from "json-schema";
 import {
@@ -49,11 +43,8 @@ import {
   Delete,
   Details,
   Edit,
-  Favorite,
   FileDownload,
   OpenInNew,
-  Person,
-  TimelineOutlined,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { primaryFields } from "../../config";
@@ -68,17 +59,11 @@ import { JsonSchema } from "@jsonforms/core";
 import useExtendedSchema from "../../state/useExtendedSchema";
 import Button from "@mui/material/Button";
 import { withDefaultPrefix } from "../../utils/crud/makeSPARQLWherePart";
-import { flatten } from "lodash";
 import get from "lodash/get";
-import { ToolbarItems } from "@uiw/react-md-editor/lib/components/Toolbar";
 import { download, generateCsv, mkConfig } from "export-to-csv";
 import { ResizableDrawer } from "../drawer";
 import { useDrawerDimensions } from "../../state";
-import VisTimelineWrapper from "../visTimelineWrapper/VisTimelineWrapper";
 import * as React from "react";
-import { dateValueToDate } from "./Search";
-import { ParentSize } from "@visx/responsive";
-import { TimelineItem, TimelineOptions } from "vis-timeline/types";
 import { FlexibleViewDrawer } from "./FlexibleViewDrawer";
 
 type Props = {
@@ -201,11 +186,21 @@ export const TypedList = ({ typeName }: Props) => {
     async () => {
       const sparqlQuery = withDefaultPrefix(
         defaultPrefix,
-        jsonSchema2Select(loadedSchema, classIRI, [], {
-          primaryFields: primaryFields,
-          orderBy: sorting.map((s) => ({ orderBy: s.id, descending: s.desc })),
-        },
-        false, "oxigraph", true),
+        jsonSchema2Select(
+          loadedSchema,
+          classIRI,
+          [],
+          {
+            primaryFields: primaryFields,
+            orderBy: sorting.map((s) => ({
+              orderBy: s.id,
+              descending: s.desc,
+            })),
+          },
+          false,
+          "oxigraph",
+          true,
+        ),
       );
       if (!sparqlQuery || !crudOptions?.selectFetch) {
         return;
@@ -531,24 +526,3 @@ export const TypedList = ({ typeName }: Props) => {
     </Box>
   );
 };
-
-/*
-const ListDebuggingTools = ({ jsonData }: ListDebuggingToolsProps) => {
-    const { features } = useSettings();
-    const { doLocalQuery } = useGlobalCRUDOptions();
-    if (!features?.enableDebug) return null;
-    return (
-
-
-      <Grid item
-      sx={{
-      maxWidth: '1000px',
-      overflow: 'auto'
-      }}>
-
-          List all {typeName} here.
-          <pre>{sparqlQuery}</pre>
-          RESULT:
-          <JsonView data={resultList} shouldInitiallyExpand={(lvl) => lvl < 3} />
-      </Grid>)
-}*/
